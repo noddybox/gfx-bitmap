@@ -24,15 +24,17 @@ The code is ISO C, so should be portable to any platform.
 The gfx-bitmap format has a fixed palette of 9 colours (these will never
 change and only be added to) which are encoded as:
 
-0 - Black
-1 - Blue
-2 - Red
-3 -  Magenta
-4 - Green
-5 - Cyan
-6 - Yellow
-7 - White
-8 - Grey
+|**Pixel Value**|**Colour**|
+|-|-|
+|0|Black|
+|1|Blue|
+|2|Red|
+|3|Magenta|
+|4|Green|
+|5|Cyan|
+|6|Yellow|
+|7|White|
+|8|Grey|
 
 Whether the end user actually honours these colours is up to the caller.
 The format specifies no RGB values for the colours, so for instance, a caller
@@ -57,7 +59,3 @@ a repeat value of (value - 0x0e), hence the smallest repeat value is two.
 Once the pixel value is repeated the next byte can either be another pixel
 value, or a further repeat value to indicate the original value is repeated
 again.
-
-# Tests
-
-A simple test is included in the `test` directory.  Simply `make` to build it.
