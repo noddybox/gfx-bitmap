@@ -27,7 +27,6 @@
 #include <string.h>
 #include "gfx-bitmap.h"
 
-#define GFX_MAGIC	"GFX0"
 #define STREAM_BLOCK	256
 #define COUNT_BASE	0x0e
 #define COUNT_MAX	(0xff - 0x0e)
@@ -48,6 +47,8 @@ typedef struct
     size_t	alloc;
 } Stream;
 
+static const uint8_t magic[] = {'G', 'F', 'X', '0'};
+
 static const uint8_t *Consume(const uint8_t *source, size_t *source_len,
 			      uint8_t *dest, size_t dest_len)
 {
@@ -61,7 +62,7 @@ static const uint8_t *Consume(const uint8_t *source, size_t *source_len,
     return source;
 }
 
-static int StreamPush(Stream *stream, uint8_t *bytes, size_t len)
+static int StreamPush(Stream *stream, const uint8_t *bytes, size_t len)
 {
     while(len)
     {
@@ -92,13 +93,13 @@ GFX_Bitmap_Status GFX_Bitmap_Decode(const uint8_t *memory, size_t len,
 	return eGFX_InvalidFile;
     }
 
-    uint8_t magic[4];
+    uint8_t read_magic[4];
 
-    memory = Consume(memory, &len, magic, sizeof magic);
+    memory = Consume(memory, &len, read_magic, sizeof read_magic);
 
     for(int f = 0; f < sizeof magic; f++)
     {
-    	if (magic[f] != GFX_MAGIC[f])
+    	if (read_magic[f] != magic[f])
 	{
 	    return eGFX_InvalidFile;
 	}
@@ -163,7 +164,7 @@ GFX_Bitmap_Status GFX_Bitmap_Encode(const GFX_Bitmap *bitmap,
 {
     Stream stream = {0};
 
-    PUSH(&stream, GFX_MAGIC, strlen(GFX_MAGIC));
+    PUSH(&stream, magic, sizeof magic);
 
     uint8_t word[2];
 
