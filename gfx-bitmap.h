@@ -70,7 +70,7 @@ typedef struct
 
 /* Convenience macro to access the pixel data
 */
-#define GFX_BITMAP_AT(bitmap, x, y)	(bitmap.data[(x) + (y) * bitmap.width])
+#define GFX_BITMAP_AT(b, x, y)	((b).data[(x) + (y) * (b).width])
 
 
 /* ---------------------------------------- INTERFACES
